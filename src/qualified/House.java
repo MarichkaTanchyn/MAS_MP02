@@ -29,23 +29,30 @@ public class House implements Serializable {
     }
 
     public void setSchool(School school) {
+//        if (this.school == school) return;
+//
+//        if (this.school == null && school != null) {
+//            this.school = school;
+//            school.addHouse(this);
+//        } else if (this.school != null && school == null) {
+//            School tmp = this.school;
+//            this.school = null;
+//            tmp.removeHouse(this);
+//        } else if (this.school != null && school != null) {
+//            School tmp = this.school;
+//            this.school = null;
+//            tmp.removeHouse(this);
+//
+//            this.school = school;
+//            school.addHouse(this);
+//        }
         if (this.school == school) return;
 
-        if (this.school == null && school != null) {
-            this.school = school;
+        if (this.school != null)
+            this.school.removeHouse(this);
+        this.school = school;
+        if (school != null)
             school.addHouse(this);
-        } else if (this.school != null && school == null) {
-            School tmp = this.school;
-            this.school = null;
-            tmp.removeHouse(this);
-        } else if (this.school != null && school != null) {
-            School tmp = this.school;
-            this.school = null;
-            tmp.removeHouse(this);
-
-            this.school = school;
-            school.addHouse(this);
-        }
     }
 
     public void setId(long id) {
@@ -59,11 +66,7 @@ public class House implements Serializable {
             throw new IllegalArgumentException("House with such id already exists");
         }
 
-        long oldRole = this.id;
         this.id = id;
-        if (school != null) {
-            school.updateKey(oldRole, this);
-        }
     }
 
     private static void addHouse(House house) throws IllegalArgumentException {

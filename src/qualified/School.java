@@ -71,33 +71,18 @@ public class School {
 
  /// to house all
     public void addHouse(House house) {
-        if (house == null) {
-            throw new IllegalArgumentException("School cannot be null.");
+        if (houses.containsValue(house)){
+            houses.put(house.getId(), house);
+            house.setSchool(this);
         }
 
-        houses.put(house.getId(), house);
-        house.setSchool(this);
     }
 
     public void removeHouse(House house) {
-        if (house == null) {
-            throw new IllegalArgumentException("School cannot be null.");
+        if (houses.containsValue(house)){
+            houses.remove(house.getId());
+            house.setSchool(null);
         }
-        houses.remove(house.getId());
-        house.setSchool(null);
-    }
-
-    public void updateKey(long oldKey, House house) {
-        if (house == null) {
-            throw new IllegalArgumentException("Cannot update key of null school.");
-        }
-
-        if (!houses.containsKey(oldKey)) {
-            throw new IllegalArgumentException("Cannot update not existing key.");
-        }
-
-        houses.remove(oldKey);
-        houses.put(house.getId(), house);
     }
 
     public Map<Long, House> getHouses() {

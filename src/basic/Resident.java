@@ -16,7 +16,7 @@ public class Resident {
 
     private House house;
 
-    public Resident(long id, String name, String surname, int apartmentNumber,House house) {
+    public Resident(long id, String name, String surname, int apartmentNumber, House house) {
         setId(id);
         setName(name);
         setSurname(surname);
@@ -29,21 +29,11 @@ public class Resident {
     public void setHouse(House house) {
         if (this.house == house) return;
 
-        if (this.house == null && house != null) {
-            this.house = house;
+        if (this.house != null)
+            this.house.removeResident(this);
+        this.house = house;
+        if (house != null)
             house.addResident(this);
-        } else if (this.house != null && house == null) {
-            House tmp = this.house;
-            this.house = null;
-            tmp.removeResident(this);
-        } else if (this.house != null && house != null) {
-            House tmp = this.house;
-            this.house = null;
-            tmp.removeResident(this);
-
-            this.house = house;
-            house.addResident(this);
-        }
     }//zmienic dużo powtarzającego sie kodu
 
     public House getHouse() {
@@ -131,7 +121,7 @@ public class Resident {
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", apartmentNumber=" + apartmentNumber +
-                ", house=" +house +
+                ", house=" + house +
                 '}';
     }
 }

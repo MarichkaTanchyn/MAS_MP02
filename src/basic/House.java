@@ -18,10 +18,10 @@ public class House implements Serializable {
     private static long minimumApartmentsNumber = 10;// klasowy
     private static Set<House> houses = new HashSet<>();//ekstensja
 
-    private final Set<Resident> residents;
+    private final Set<Resident> houseResidents;
 
     public House(long id, LocalDateTime dateOfSale, HouseAddress houseAddress, Set<Integer> apartments, Resident resident) {
-        residents = new HashSet<>();
+        houseResidents = new HashSet<>();
         setId(id);
         setDateOfSale(dateOfSale);
         setHouseAddress(houseAddress);
@@ -31,7 +31,7 @@ public class House implements Serializable {
     }
 
     public House(long id, String name, LocalDateTime dateOfSale, HouseAddress houseAddress, Set<Integer> apartments, Resident resident) {
-        residents = new HashSet<>();
+        houseResidents = new HashSet<>();
         setId(id);
         setName(name);
         setDateOfSale(dateOfSale);
@@ -42,17 +42,22 @@ public class House implements Serializable {
     }
     // Association methods
     public void addResident(Resident resident) {
-        this.residents.add(resident);
-        resident.setHouse(this);//zabiezpieczenie przed zapętłeniem po zmienianiu kodu w resident
+        if (!houseResidents.contains(resident)){
+            this.houseResidents.add(resident);
+            resident.setHouse(this);
+        }
+        //zabiezpieczenie przed zapętłeniem po zmienianiu kodu w resident
     }
 
     public void removeResident(Resident resident) {
-        this.residents.remove(resident);
-        resident.setHouse(null);
+        if (houseResidents.contains(resident)) {
+            this.houseResidents.remove(resident);
+            resident.setHouse(null);
+        }
     }
 
-    public Set<Resident> getResidents() {
-        return Collections.unmodifiableSet(this.residents);
+    public Set<Resident> getHouseResidents() {
+        return Collections.unmodifiableSet(this.houseResidents);
     }
 
 
@@ -94,7 +99,7 @@ public class House implements Serializable {
     }
 
 // ekstensja trwala save & load
-    public static boolean save(String path) {//TODO: function must take a Stream
+    public static boolean save(String path) {
         try (ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(path))) {
             os.writeObject(houses);
         } catch (IOException e) {
@@ -104,7 +109,7 @@ public class House implements Serializable {
         return true;
     }
 
-    public static void load(String path) {//TODO: function must take a Stream
+    public static void load(String path) {
         try (ObjectInputStream is = new ObjectInputStream(new FileInputStream(path))) {
             Set<House> loadedHouses = (Set<House>) is.readObject();
             setHouses(loadedHouses);
@@ -256,7 +261,7 @@ public class House implements Serializable {
                 ", dateOfSale=" + dateOfSale +
                 ", houseAddress=" + houseAddress +
                 ", apartments=" + apartments +
-                ", residents ID=" + residents.stream().map(Resident::getId).collect(Collectors.toList()).toString() +
+                ", residents ID=" + houseResidents.stream().map(Resident::getId).collect(Collectors.toList()).toString() +
                 '}';
     }
 }

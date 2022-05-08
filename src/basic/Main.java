@@ -38,6 +38,6 @@ public class Main {
 
         h2.removeResident(maria);
         System.out.println("\nRemoved Maria from house 2 in :");
-        System.out.println(h2.getResidents());
+        System.out.println(h2.getHouseResidents());
     }
 }
