@@ -56,22 +56,27 @@ public class Employment {
             throw new IllegalArgumentException("Employment with id " + employment.getId() + " was not removed.");
         }
     }
+
     private void removeAll() {
         removeEmployment(this);
         removeHouse();
         removeEmployee();
     }
 
-    private void removeHouse() {
-        House tmp = this.house;
-        this.house = null;
-        tmp.removeEmployment(this);
+    public void removeHouse() {
+        if (getHouse() != null) {
+            House tmp = this.house;
+            this.house = null;
+            tmp.removeEmployment(this);
+        }
     }
 
-    private void removeEmployee() {
-        Employee tmp = this.employee;
-        this.employee = null;
-        tmp.removeEmployment(this);
+    public void removeEmployee() {
+        if (getEmployee() != null) {
+            Employee tmp = this.employee;
+            this.employee = null;
+            tmp.removeEmployment(this);
+        }
     }
 
     public void setId(long id) {
@@ -99,32 +104,24 @@ public class Employment {
     }
 
     public void setHouse(House house) {
-        if (this.house == house) return;
-
-        if (this.house == null && house != null) {
+        if ((getHouse() == null) && house != null) {
             if (pairIsNotUnique(house, this.employee)) {
                 throw new IllegalArgumentException("Pair is not unique.");
             }
             this.house = house;
             house.addEmployment(this);
-        } else if (this.house != null && house == null) {
-            removeAll();
         }
     }
 
     public void setEmployee(Employee employee) {
-        if (this.employee == employee) return;
-
-        if (this.employee == null && employee != null) {
+        if ((getEmployee() == null) && employee != null) {
             if (pairIsNotUnique(this.house, employee)) {
                 throw new IllegalArgumentException("Pair is not unique.");
             }
             this.employee = employee;
             employee.addEmployment(this);
-        } else if (this.employee != null && employee == null) {
-            removeAll();
         }
-    }//prywatne
+    }
 
     public long getId() {
         return id;

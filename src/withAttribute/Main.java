@@ -5,8 +5,6 @@ import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
-
-
         House h1 = new House(
                 1,
                 "House_1",
@@ -34,10 +32,9 @@ public class Main {
         System.out.println("Pracownik 2");
         System.out.println(e2.getEmployments().toString());
 
-        empl1.setHouse(null);
-        empl2.setEmployee(null);
+        h1.removeEmployment(empl1);
 
-        System.out.println("usunięto wszystko");
+        System.out.println("usunięto employment dla house id: " + h1.getId() + " and employee id: " + e1.getId());
 
         System.out.println(h1.getEmployments().toString());
         System.out.println(e1.getEmployments().toString());

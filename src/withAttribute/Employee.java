@@ -24,29 +24,18 @@ public class Employee {
     }
 
     public void addEmployment(Employment employment) {
-        if (employment == null) {
-            throw new IllegalArgumentException("Ticket cannot be null.");
+        if (!(employment == null) && ! employments.contains(employment)){
+            employments.add(employment);
+            employment.setEmployee(this);
         }
-
-        if (employments.contains(employment)) {
-            throw new IllegalArgumentException("Association cannot contain duplicates.");
-        }
-
-        this.employments.add(employment);
-        employment.setEmployee(this);
     }
 
     public void removeEmployment(Employment employment) {
-        if (employment == null) {
-            throw new IllegalArgumentException("Employment cannot be null.");
+        if (employments.contains(employment)){
+            employments.remove(employment);
+            employment.removeHouse();
+            employment.removeEmployee();
         }
-
-        if (!employments.contains(employment)) {
-            throw new IllegalArgumentException("Cannot remove employment which does not exist.");
-        }
-
-        this.employments.remove(employment);
-        employment.setEmployee(null);
     }
 
 
